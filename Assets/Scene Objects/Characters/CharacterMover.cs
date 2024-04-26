@@ -16,6 +16,8 @@ public abstract class CharacterMover
 
         OnInit();
     }
+     
+
 
     public void ResetVelocityX() =>
         Rigidbody2D.velocity = new Vector2(0, Rigidbody2D.velocity.y);
