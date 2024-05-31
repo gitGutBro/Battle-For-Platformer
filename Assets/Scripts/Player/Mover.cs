@@ -2,7 +2,7 @@ using System;
 using UnityEngine;
 
 [Serializable]
-public class Mover : INotifyVelocityChanged
+public class Mover
 {
     private const string Horizontal = nameof(Horizontal);
     private const KeyCode JumpKey = KeyCode.W;
@@ -18,8 +18,6 @@ public class Mover : INotifyVelocityChanged
     private Fliper _fliper;
     private Rigidbody2D _rigidbody;
 
-    public event Action<Vector2> VelocityChanged;
-
     public bool IsGrounded => WasGrounded();
     
     public void Init(Rigidbody2D rigidbody)
@@ -33,7 +31,6 @@ public class Mover : INotifyVelocityChanged
         float direction = Input.GetAxis(Horizontal);
 
         ToMove(direction * _speed, _rigidbody.velocity.y);
-        VelocityChanged?.Invoke(_rigidbody.velocity);
         _fliper.Flip(direction, transform);
     }
 
