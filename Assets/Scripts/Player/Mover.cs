@@ -4,9 +4,6 @@ using UnityEngine;
 [Serializable]
 public class Mover
 {
-    private const string Horizontal = nameof(Horizontal);
-    private const KeyCode JumpKey = KeyCode.W;
-
     [Header("Move Multipliers")]
     [SerializeField][Min(1.5f)] private float _jumpForce;
     [SerializeField][Min(1.5f)] private float _speed;
@@ -17,27 +14,38 @@ public class Mover
 
     private Fliper _fliper;
     private Rigidbody2D _rigidbody;
-
-    public bool IsGrounded => WasGrounded();
+    private Transform _transform;
     
+    public float Velocity => _rigidbody.velocity.magnitude;
+    public bool IsGrounded { get; private set; }
+
     public void Init(Rigidbody2D rigidbody)
     {
         _fliper = new();
         _rigidbody = rigidbody;
+        _transform = _rigidbody.transform;
     }
 
-    public void Move(Transform transform)
+    public void Update()
     {
-        float direction = Input.GetAxis(Horizontal);
+        if (_rigidbody.velocity.y <= 0.8)
+            IsGrounded = WasGrounded();
+    }
 
+    public void Move(float direction)
+    {
         ToMove(direction * _speed, _rigidbody.velocity.y);
-        _fliper.Flip(direction, transform);
+
+        _fliper.Flip(direction, _transform);
     }
 
-    public void JumpByKey()
+    public void Jump()
     {
-        if (IsGrounded && Input.GetKeyDown(JumpKey))
+        if (IsGrounded)
+        {
             ToJump();
+            IsGrounded = false;
+        }
     }
 
     private void ToMove(float x, float y) =>
@@ -46,8 +54,8 @@ public class Mover
     private void ToJump() =>
         _rigidbody.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
 
-    private bool WasGrounded() =>
+    private bool WasGrounded() => 
         Physics2D.OverlapCircleAll
-        (_onGroundCollider.transform.position, _onGroundCollider.size.y, _groundMask)
+        (_onGroundCollider.transform.position, _onGroundCollider.size.x, _groundMask)
         .Length > 0;
 }
