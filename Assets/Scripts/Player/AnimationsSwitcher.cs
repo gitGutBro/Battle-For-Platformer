@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class AnimationsSwitcher
 {
-    //public readonly static int Jump = Animator.StringToHash(nameof(Jump));
-    //public readonly static int Land = Animator.StringToHash(nameof(Land));
     public readonly static int IsGrounded = Animator.StringToHash(nameof(IsGrounded));
     public readonly static int Speed = Animator.StringToHash(nameof(Speed));
     public readonly static int Punch = Animator.StringToHash(nameof(Punch));
@@ -18,12 +16,6 @@ public class AnimationsSwitcher
 
     public void SetGrounded(bool state) =>
         _animator.SetBool(IsGrounded, state);
-
-    //public void ToLand() =>
-    //    _animator.SetTrigger(Land);
-
-    //public void ToJump() => 
-    //    _animator.SetTrigger(Jump);
 
     public void ToPunch() => 
         _animator.SetTrigger(Punch);
