@@ -15,8 +15,7 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        _mover.Update();
-        _inputService.Update();
+        ScriptsUpdate();
 
         _mover.Move(_inputService.AxisHorizontal);
         _animationsSwitcher.SetSpeed(_inputService.AxisHorizontal);
@@ -25,6 +24,12 @@ public class Player : MonoBehaviour
             _mover.Jump();
 
         _animationsSwitcher.SetGrounded(_mover.IsGrounded);
+    }
+
+    private void ScriptsUpdate()
+    {
+        _mover.Update();
+        _inputService.Update();
     }
 
     private void Init()
