@@ -15,21 +15,26 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        ScriptsUpdate();
+        _inputService.Update();
 
+        Jump();
+    }
+
+    private void FixedUpdate() =>
+        Move();
+
+    private void Move()
+    {
         _mover.Move(_inputService.AxisHorizontal);
         _animationsSwitcher.SetSpeed(_inputService.AxisHorizontal);
+    }
 
+    private void Jump()
+    {
         if (_inputService.IsJumped)
             _mover.Jump();
 
         _animationsSwitcher.SetGrounded(_mover.IsGrounded);
-    }
-
-    private void ScriptsUpdate()
-    {
-        _mover.Update();
-        _inputService.Update();
     }
 
     private void Init()

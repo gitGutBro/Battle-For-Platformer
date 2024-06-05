@@ -16,20 +16,13 @@ public class Mover
     private Rigidbody2D _rigidbody;
     private Transform _transform;
     
-    public float Velocity => _rigidbody.velocity.magnitude;
-    public bool IsGrounded { get; private set; }
+    public bool IsGrounded => WasGrounded();
 
     public void Init(Rigidbody2D rigidbody)
     {
         _fliper = new();
         _rigidbody = rigidbody;
         _transform = _rigidbody.transform;
-    }
-
-    public void Update()
-    {
-        if (_rigidbody.velocity.y <= 0.8)
-            IsGrounded = WasGrounded();
     }
 
     public void Move(float direction)
@@ -42,10 +35,7 @@ public class Mover
     public void Jump()
     {
         if (IsGrounded)
-        {
             ToJump();
-            IsGrounded = false;
-        }
     }
 
     private void ToMove(float x, float y) =>
