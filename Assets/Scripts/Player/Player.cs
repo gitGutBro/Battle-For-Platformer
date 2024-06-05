@@ -13,14 +13,6 @@ public class Player : MonoBehaviour
     private void Awake() =>
         Init();
 
-    private void OnEnable()
-    {
-    }
-
-    private void OnDisable()
-    {
-    }
-
     private void Update()
     {
         _mover.Update();
@@ -30,22 +22,9 @@ public class Player : MonoBehaviour
         _animationsSwitcher.SetSpeed(_inputService.AxisHorizontal);
 
         if (_inputService.IsJumped)
-        {
             _mover.Jump();
 
-            if (_mover.IsGrounded == false)
-                _animationsSwitcher.ToJump();
-        }
-        else
-        {
-            if (_mover.IsGrounded)
-                _animationsSwitcher.ToLand();
-        }
-
-    }
-
-    private void FixedUpdate()
-    {
+        _animationsSwitcher.SetGrounded(_mover.IsGrounded);
     }
 
     private void Init()
