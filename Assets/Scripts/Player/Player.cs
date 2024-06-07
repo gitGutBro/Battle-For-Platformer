@@ -2,10 +2,10 @@ using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Animator))]
-public class Player : MonoBehaviour
+public class Player : Character
 {
     [Header("Moving Settings")]
-    [SerializeField] private Mover _mover;
+    [SerializeField] private PlayerMover _mover;
 
     private AnimationsSwitcher _animationsSwitcher;
     private InputService _inputService;
