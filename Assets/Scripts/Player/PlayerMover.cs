@@ -18,6 +18,13 @@ public class PlayerMover : CharacterMover
             ToJump();
     }
 
+    public void Move(float direction)
+    {
+        ToMove(direction * Speed, Rigidbody.velocity.y);
+
+        Fliper.Flip(direction, Transform);
+    }
+
     private void ToJump() =>
         Rigidbody.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
 

@@ -6,25 +6,22 @@ public class CharacterMover
 {
     [SerializeField][Min(1.5f)] private float _speed;
 
-    private Fliper _fliper;
-    private Transform _transform;
-
+    protected float Speed => _speed;
+    protected Fliper Fliper { get; private set; }
     protected Rigidbody2D Rigidbody { get; private set; }
+    protected Transform Transform { get; private set; }
 
-    public void Move(float direction)
-    {
-        ToMove(direction * _speed, Rigidbody.velocity.y);
+    protected void ToMove(float x, float y) =>
+        Rigidbody.velocity = new Vector2(x, y);
 
-        _fliper.Flip(direction, _transform);
-    }
+    protected virtual void OnInit() { }
 
     public void Init(Rigidbody2D rigidbody)
     {
-        _fliper = new();
+        Fliper = new();
         Rigidbody = rigidbody;
-        _transform = Rigidbody.transform;
-    }
+        Transform = Rigidbody.transform;
 
-    private void ToMove(float x, float y) =>
-        Rigidbody.velocity = new Vector2(x, y);
+        OnInit();
+    }
 }
