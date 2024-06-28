@@ -10,6 +10,11 @@ public class EnemyMover : CharacterMover
 
     private int _currentPoint;
 
+    public RaycastHit2D TargetHit { get; private set; }
+
+    public void TakeTargetHit(RaycastHit2D hit) =>
+        TargetHit = hit;
+
     public async UniTask PatrolAsync(CancellationToken token)
     {
         while (token.IsCancellationRequested == false)
@@ -26,6 +31,7 @@ public class EnemyMover : CharacterMover
         while (Vector2.Distance(Transform.position, point.position) > RangePointDetecting && token.IsCancellationRequested == false)
         {
             Transform.position = Vector2.MoveTowards(Transform.position, point.position, Speed * Time.deltaTime);
+            Fliper.Flip(Transform.position.x - point.position.x, Transform);
             await UniTask.Yield();
         }
     }

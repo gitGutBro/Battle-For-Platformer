@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class AnimationsSwitcher
+public class AnimationsPlayerSwitcher
 {
     public readonly static int IsGrounded = Animator.StringToHash(nameof(IsGrounded));
     public readonly static int Speed = Animator.StringToHash(nameof(Speed));
@@ -8,7 +8,7 @@ public class AnimationsSwitcher
 
     private readonly Animator _animator;
 
-    public AnimationsSwitcher(Animator animator) =>
+    public AnimationsPlayerSwitcher(Animator animator) =>
         _animator = animator;
 
     public void SetSpeed(float speed) =>

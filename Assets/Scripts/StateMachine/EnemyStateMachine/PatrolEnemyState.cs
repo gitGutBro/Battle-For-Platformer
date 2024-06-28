@@ -3,7 +3,8 @@ using System.Threading;
 
 public class PatrolEnemyState : IEnemyState
 {
-    private EnemyMover _mover;
+    private readonly EnemyMover _mover;
+
     private CancellationTokenSource _tokenSource;
 
     public PatrolEnemyState(EnemyMover mover) => 
@@ -15,8 +16,6 @@ public class PatrolEnemyState : IEnemyState
         _mover.PatrolAsync(_tokenSource.Token);
     }
 
-    public void Exit()
-    {
+    public void Exit() => 
         _tokenSource.Cancel();
-    }
 }

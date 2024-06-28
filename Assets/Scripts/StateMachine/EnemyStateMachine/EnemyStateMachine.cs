@@ -11,7 +11,10 @@ public class EnemyStateMachine
     {
         _states = new()
         {
-            { typeof(PatrolEnemyState), new PatrolEnemyState(mover) }
+            { typeof(PatrolEnemyState), new PatrolEnemyState(mover)},
+            { typeof(MoveToTargetState), new MoveToTargetState(mover)},
+            { typeof(EmptyState), new EmptyState()}
+            
         };
 
         _currentState = _states[typeof(PatrolEnemyState)];
