@@ -2,31 +2,36 @@ using System;
 using UnityEngine;
 
 [Serializable]
-public class PlayerMover : CharacterMover
+public class PlayerMover
 {
+    [SerializeField][Min(1.5f)] private float _speed;
     [SerializeField][Min(1.5f)] private float _jumpForce;
     [Space]
     [Header("Objects for interact with ground")]
     [SerializeField] private LayerMask _groundMask;
     [SerializeField] private CapsuleCollider2D _onGroundCollider;
 
+    private Rigidbody2D _rigidbody2D;
+
     public bool IsGrounded => WasGrounded();
 
     public void Jump()
     {
         if (IsGrounded)
-            ToJump();
+            JumpTo();
     }
 
     public void Move(float direction)
     {
-        ToMove(direction * Speed, Rigidbody.velocity.y);
-
-        Fliper.Flip(direction, Transform);
+        _rigidbody2D.SetVelocity(direction * _speed, _rigidbody2D.velocity.y);
+        _rigidbody2D.transform.Flip(direction);
     }
 
-    private void ToJump() =>
-        Rigidbody.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
+    public void Init(Rigidbody2D rigidbody2D) => 
+        _rigidbody2D = rigidbody2D;
+
+    private void JumpTo() =>
+        _rigidbody2D.AddForce(Vector2.up * _jumpForce, ForceMode2D.Impulse);
 
     private bool WasGrounded() => 
         Physics2D.OverlapCircleAll

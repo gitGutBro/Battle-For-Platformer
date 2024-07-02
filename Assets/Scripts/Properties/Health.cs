@@ -4,17 +4,33 @@ using UnityEngine;
 [Serializable]
 public class Health
 {
-    private const int MaxValue = 10;
-    private const int MinValue = 0;
+    public const int Max = 10;
+    private const int Min = 0;
 
-    private int _currentValue;
+    [SerializeField][Range(Min, Max)] private int _current;
 
     public Health() =>
-        _currentValue = MaxValue;
+        _current = Max;
 
-    public void Increase(int healValue) => 
-        _currentValue = Mathf.Clamp(_currentValue + healValue, MinValue, MaxValue);
+    public event Action Died;
+    public event Action<int> Changed;
 
-    public void Decrease(int damageValue) => 
-        _currentValue = Mathf.Clamp(_currentValue - damageValue, MinValue, MaxValue);
+    public int Current => _current;
+
+    public void Increase(int heal) => 
+        _current = Mathf.Clamp
+        (_current + heal, 
+        Min, Max);
+
+    public void Decrease(int damage)
+    {
+        _current = Mathf.Clamp
+        (_current - damage,
+        Min, Max);
+
+        Changed?.Invoke(_current);
+
+        if (_current <= Min)
+            Died.Invoke();
+    }
 }

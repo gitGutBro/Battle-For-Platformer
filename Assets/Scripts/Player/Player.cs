@@ -2,10 +2,11 @@ using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Animator))]
-public class Player : Character
+public class Player : MonoBehaviour, IDamager, IItemPicker
 {
     private const float MaxDelay = 0.5f;
 
+    [SerializeField] private HealthBar _healthBar;
     [SerializeField] private AttackArea _attackArea;
 
     [Header("Moving Settings")]
@@ -15,14 +16,25 @@ public class Player : Character
     private AnimationsPlayerSwitcher _animationsSwitcher;
     private InputService _inputService;
 
-    private void OnEnable() => 
-        _attackArea.CharacterAttacking += OnAttack;
+    [field: SerializeField] public Health Health { get; private set; }
+    [field: SerializeField] public Damager Damager { get; private set; }
+
+    public Wallet Wallet { get; private set; }
+
+    private void OnEnable()
+    {
+        Health.Died += OnDie;
+        Health.Changed += _healthBar.Set;
+    }
 
     private void Awake() =>
         Init();
 
-    private void OnDisable() => 
-        _attackArea.CharacterAttacking -= OnAttack;
+    private void OnDisable()
+    {
+        Health.Died -= OnDie;
+        Health.Changed -= _healthBar.Set;
+    }
 
     private void Update()
     {
@@ -31,12 +43,16 @@ public class Player : Character
 
         _inputService.Update();
 
-        OnAttack();
+        Move();
+        Attack();
         Jump();
     }
 
-    private void FixedUpdate() => 
-        Move();
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.TryGetComponent(out Item item))
+            item.Use(this);
+    }
 
     private void Move()
     {
@@ -52,22 +68,32 @@ public class Player : Character
         _animationsSwitcher.SetGrounded(_mover.IsGrounded);
     }
 
-    private void OnAttack()
+    private void Attack()
     {
         if (_inputService.IsAttacking && _mover.IsGrounded && _eventDelay >= MaxDelay)
         {
             Damager.Attack(_attackArea.Area);
-            _animationsSwitcher.ToPunch();
+            _animationsSwitcher.SetPunch();
             _eventDelay = 0;
         }
+    }
+
+    private void OnDie()
+    {
+        _animationsSwitcher.SetDie();
+        _attackArea.Off();
+        gameObject.SetActive(false);
     }
 
     private void Init()
     {
         _inputService = new();
+        Wallet = new();
         _eventDelay = MaxDelay;
 
         _mover.Init(GetComponent<Rigidbody2D>());
+        _healthBar.Set(Health.Current);
+
         _animationsSwitcher = new(GetComponent<Animator>());
     }
 }

@@ -2,11 +2,12 @@ using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
 [RequireComponent(typeof(Animator))]
-public class Enemy : Character
+public class Enemy : MonoBehaviour, IDamager
 {
-    private const float MaxDelay = 0.5f;
     private readonly static int IsAttacking = Animator.StringToHash(nameof(IsAttacking));
+    private readonly static int Die = Animator.StringToHash(nameof(Die));
 
+    [SerializeField] private HealthBar _healthBar;
     [SerializeField] private EnemyAttackArea _enemyAttackArea;
     [Space]
     [Header("Target Settings")]
@@ -16,14 +17,19 @@ public class Enemy : Character
     [SerializeField] private EnemyMover _mover;
 
     private bool _isAttacking;
-    private float _eventDelay;
-    private EnemyStateMachine _stateMachine;
+    private StateMachine _stateMachine;
     private Animator _animator;
+
+    [field: SerializeField] public Health Health { get; private set; }
+    [field: SerializeField] public Damager Damager { get; private set; }
 
     private void OnEnable()
     {
         _enemyAttackArea.CharacterAttacking += OnAttack;
         _enemyAttackArea.CharacterNotAttacking += OnStopAttack;
+
+        Health.Died += OnDied;
+        Health.Changed += _healthBar.Set;
     }
 
     private void Awake() => 
@@ -33,13 +39,13 @@ public class Enemy : Character
     {
         _enemyAttackArea.CharacterAttacking -= OnAttack;
         _enemyAttackArea.CharacterNotAttacking -= OnStopAttack;
+
+        Health.Died -= OnDied;
+        Health.Changed -= _healthBar.Set;
     }
 
     private void Update()
     {
-        if (_eventDelay < MaxDelay)
-            _eventDelay += Time.deltaTime;
-
         if (_isAttacking)
             return;
 
@@ -47,7 +53,7 @@ public class Enemy : Character
 
         if (_mover.TargetHit == false)
         {
-            _stateMachine.ChangeState(typeof(PatrolEnemyState));
+            _stateMachine.ChangeState(typeof(PatrolState));
             return;
         }
 
@@ -60,18 +66,23 @@ public class Enemy : Character
     
     private void OnAttack()
     {
-        if (_eventDelay < MaxDelay)
-            return;
-
-        _eventDelay = 0;
-        Damager.Attack(_mover.TargetHit.collider);
         _isAttacking = true;
         _animator.SetBool(IsAttacking, _isAttacking);
-        _stateMachine.ChangeState(typeof(EmptyState));
+
+        _stateMachine.ChangeState(typeof(AttackState));
     }
 
     private void OnStopAttack() =>
         _isAttacking = false;
+
+    private void OnDied()
+    {
+        _isAttacking = false;
+        _animator.SetTrigger(Die);
+
+        _stateMachine.ChangeState(typeof(DieState));
+        gameObject.SetActive(false);
+    }
 
     private RaycastHit2D TryFindPlayer() =>
         Physics2D.Raycast(transform.position, 
@@ -84,7 +95,7 @@ public class Enemy : Character
         _mover.Init(GetComponent<Rigidbody2D>());
         _animator = GetComponent<Animator>();
 
-        _eventDelay = MaxDelay;
-        _stateMachine = new(_mover);
+        _healthBar.Set(Health.Current);
+        _stateMachine = new(_mover, Damager, _enemyAttackArea);
     }
 }

@@ -2,7 +2,16 @@ using System;
 
 public class EnemyAttackArea : AttackArea
 {
+    public event Action CharacterAttacking;
     public event Action CharacterNotAttacking;
+
+    private void OnTriggerStay2D()
+    {
+        if (enabled == false)
+            return;
+
+        CharacterAttacking.Invoke();
+    }
 
     private void OnTriggerExit2D() =>
         CharacterNotAttacking.Invoke();
