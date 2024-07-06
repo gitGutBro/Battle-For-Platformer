@@ -14,11 +14,12 @@ public class Enemy : MonoBehaviour, IDamager
     [SerializeField] private EnemyMover _mover;
 
     private bool _isAttacking;
-    private RaycastHit2D TargetHit => TryFindPlayer();
     private StateMachine _stateMachine;
 
     [field: SerializeField] public Health Health { get; private set; }
     [field: SerializeField] public Damager Damager { get; private set; }
+
+    private RaycastHit2D TargetHit => TryFindPlayer();
 
     private void OnEnable()
     {
