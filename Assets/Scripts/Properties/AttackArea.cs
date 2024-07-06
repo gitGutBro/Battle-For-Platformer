@@ -7,7 +7,4 @@ public class AttackArea : MonoBehaviour
 
     private void Awake() => 
         Area = GetComponent<Collider2D>();
-
-    public void Off() => 
-        enabled = false;
 }

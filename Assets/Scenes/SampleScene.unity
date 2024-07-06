@@ -2965,6 +2965,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 743577666}
     - target: {fileID: 7917139584843615070, guid: 0d37b244df7bcb34b908bd084759069c, type: 3}
+      propertyPath: _detectionDistance
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7917139584843615070, guid: 0d37b244df7bcb34b908bd084759069c, type: 3}
       propertyPath: _health.CurrentValue
       value: 10
       objectReference: {fileID: 0}

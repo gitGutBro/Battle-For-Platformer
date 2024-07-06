@@ -12,10 +12,10 @@ public class EnemyMover
     private int _currentPoint;
     private Rigidbody2D _rigidbody2D;
 
-    public RaycastHit2D TargetHit { get; private set; }
+    public event Func<RaycastHit2D> TargetHit;
 
-    public void TakeTargetHit(RaycastHit2D hit) =>
-        TargetHit = hit;
+    public Transform GetTargetTransform() => 
+        TargetHit.Invoke().transform;
 
     public async UniTask PatrolAsync(CancellationToken token)
     {

@@ -12,7 +12,7 @@ public class Player : MonoBehaviour, IDamager, IItemPicker
     [Header("Moving Settings")]
     [SerializeField] private PlayerMover _mover;
 
-    private float _eventDelay;
+    private float _attackDelay;
     private AnimationsPlayerSwitcher _animationsSwitcher;
     private InputService _inputService;
 
@@ -38,8 +38,8 @@ public class Player : MonoBehaviour, IDamager, IItemPicker
 
     private void Update()
     {
-        if (_eventDelay < MaxDelay)
-            _eventDelay += Time.deltaTime;
+        if (_attackDelay < MaxDelay)
+            _attackDelay += Time.deltaTime;
 
         _inputService.Update();
 
@@ -50,7 +50,7 @@ public class Player : MonoBehaviour, IDamager, IItemPicker
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.TryGetComponent(out Item item))
+        if (collision.TryGetComponent(out IItem item))
             item.Use(this);
     }
 
@@ -70,18 +70,17 @@ public class Player : MonoBehaviour, IDamager, IItemPicker
 
     private void Attack()
     {
-        if (_inputService.IsAttacking && _mover.IsGrounded && _eventDelay >= MaxDelay)
+        if (_inputService.IsAttacking && _mover.IsGrounded && _attackDelay >= MaxDelay)
         {
             Damager.Attack(_attackArea.Area);
             _animationsSwitcher.SetPunch();
-            _eventDelay = 0;
+            _attackDelay = 0;
         }
     }
 
     private void OnDie()
     {
         _animationsSwitcher.SetDie();
-        _attackArea.Off();
         gameObject.SetActive(false);
     }
 
@@ -89,7 +88,7 @@ public class Player : MonoBehaviour, IDamager, IItemPicker
     {
         _inputService = new();
         Wallet = new();
-        _eventDelay = MaxDelay;
+        _attackDelay = MaxDelay;
 
         _mover.Init(GetComponent<Rigidbody2D>());
         _healthBar.Set(Health.Current);
