@@ -14,7 +14,7 @@ public class Enemy : MonoBehaviour, IDamager
     [SerializeField] private EnemyMover _mover;
 
     private bool _isAttacking;
-    private RaycastHit2D _targetHit => TryFindPlayer();
+    private RaycastHit2D TargetHit => TryFindPlayer();
     private StateMachine _stateMachine;
 
     [field: SerializeField] public Health Health { get; private set; }
@@ -50,13 +50,13 @@ public class Enemy : MonoBehaviour, IDamager
         if (_isAttacking)
             return;
 
-        if (_targetHit == false)
+        if (TargetHit == false)
         {
             _stateMachine.ChangeState(typeof(PatrolState));
             return;
         }
 
-        if (_targetHit)
+        if (TargetHit)
             _stateMachine.ChangeState(typeof(MoveToTargetState));
     }
 
