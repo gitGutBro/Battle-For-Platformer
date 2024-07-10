@@ -4,7 +4,6 @@ using UnityEngine;
 [RequireComponent(typeof(Animator))]
 public class Enemy : MonoBehaviour, IDamager
 {
-    [SerializeField] private HealthBar _healthBar;
     [SerializeField] private EnemyAttackArea _enemyAttackArea;
     [Space]
     [Header("Target Settings")]
