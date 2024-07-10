@@ -16,7 +16,7 @@ public class Enemy : MonoBehaviour, IDamager
     private bool _isAttacking;
     private StateMachine _stateMachine;
 
-    [field: SerializeField] public Health Health { get; private set; }
+    [field: SerializeField] public HealthBar HealthBar { get; private set; }
     [field: SerializeField] public Damager Damager { get; private set; }
 
     private RaycastHit2D TargetHit => TryFindPlayer();
@@ -28,8 +28,7 @@ public class Enemy : MonoBehaviour, IDamager
         _enemyAttackArea.CharacterAttacking += OnAttack;
         _enemyAttackArea.CharacterNotAttacking += OnStopAttack;
 
-        Health.Died += OnDied;
-        Health.Changed += _healthBar.Set;
+        HealthBar.Health.Died += OnDied;
     }
 
     private void Awake() => 
@@ -42,8 +41,7 @@ public class Enemy : MonoBehaviour, IDamager
         _enemyAttackArea.CharacterAttacking -= OnAttack;
         _enemyAttackArea.CharacterNotAttacking -= OnStopAttack;
 
-        Health.Died -= OnDied;
-        Health.Changed -= _healthBar.Set;
+        HealthBar.Health.Died -= OnDied;
     }
 
     private void Update()
@@ -90,6 +88,5 @@ public class Enemy : MonoBehaviour, IDamager
         _mover.Init(GetComponent<Rigidbody2D>());
 
         _stateMachine = new(_mover, Damager, _enemyAttackArea, GetComponent<Animator>());
-        _healthBar.Set(Health.Current);
     }
 }

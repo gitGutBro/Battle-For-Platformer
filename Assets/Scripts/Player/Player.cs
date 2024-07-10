@@ -6,7 +6,6 @@ public class Player : MonoBehaviour, IDamager, IItemPicker
 {
     private const float MaxDelay = 0.5f;
 
-    [SerializeField] private HealthBar _healthBar;
     [SerializeField] private AttackArea _attackArea;
 
     [Header("Moving Settings")]
@@ -16,25 +15,19 @@ public class Player : MonoBehaviour, IDamager, IItemPicker
     private AnimationsPlayerSwitcher _animationsSwitcher;
     private InputService _inputService;
 
-    [field: SerializeField] public Health Health { get; private set; }
+    [field: SerializeField] public HealthBar HealthBar { get; private set; }
     [field: SerializeField] public Damager Damager { get; private set; }
 
     public Wallet Wallet { get; private set; }
 
-    private void OnEnable()
-    {
-        Health.Died += OnDie;
-        Health.Changed += _healthBar.Set;
-    }
+    private void OnEnable() => 
+        HealthBar.Health.Died += OnDie;
 
     private void Awake() =>
         Init();
 
-    private void OnDisable()
-    {
-        Health.Died -= OnDie;
-        Health.Changed -= _healthBar.Set;
-    }
+    private void OnDisable() => 
+        HealthBar.Health.Died -= OnDie;
 
     private void Update()
     {
@@ -91,7 +84,6 @@ public class Player : MonoBehaviour, IDamager, IItemPicker
         _attackDelay = MaxDelay;
 
         _mover.Init(GetComponent<Rigidbody2D>());
-        _healthBar.Set(Health.Current);
 
         _animationsSwitcher = new(GetComponent<Animator>());
     }
