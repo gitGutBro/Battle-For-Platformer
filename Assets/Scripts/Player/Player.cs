@@ -15,19 +15,19 @@ public class Player : MonoBehaviour, IDamager, IItemPicker
     private AnimationsPlayerSwitcher _animationsSwitcher;
     private InputService _inputService;
 
-    [field: SerializeField] public HealthBar HealthBar { get; private set; }
+    [field: SerializeField] public Health Health { get; private set; }
     [field: SerializeField] public Damager Damager { get; private set; }
 
     public Wallet Wallet { get; private set; }
 
     private void OnEnable() => 
-        HealthBar.Health.Died += OnDie;
+        Health.Died += OnDie;
 
     private void Awake() =>
         Init();
 
     private void OnDisable() => 
-        HealthBar.Health.Died -= OnDie;
+        Health.Died -= OnDie;
 
     private void Update()
     {

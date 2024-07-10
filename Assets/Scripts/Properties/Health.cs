@@ -4,10 +4,11 @@ using UnityEngine;
 [Serializable]
 public class Health
 {
-    public const int Max = 10;
     private const int Min = 0;
 
-    [SerializeField][Range(Min, Max)] private int _current;
+    [SerializeField][Min(Min)] private int _current;
+
+    [field: SerializeField] public int Max { get; private set; }
 
     public Health() =>
         _current = Max;
@@ -31,6 +32,6 @@ public class Health
         Changed?.Invoke(_current);
 
         if (_current <= Min)
-            Died.Invoke();
+            Died?.Invoke();
     }
 }

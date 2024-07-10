@@ -1,4 +1,4 @@
 public interface IDamagable
 {
-    HealthBar HealthBar { get; }
+    Health Health { get; }
 }

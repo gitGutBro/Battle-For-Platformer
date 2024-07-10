@@ -1,4 +1,3 @@
-using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,25 +7,49 @@ public class HealthBar : MonoBehaviour
     [SerializeField] private Image _image;
     [SerializeField] private TMP_Text _value;
 
-    [field: SerializeField] public Health Health { get; private set; }
+    [SerializeField] private MonoBehaviour _damagableObject;
+    
+    private IDamagable _damagable;
 
-    private void Awake() => 
-        Init();
+    private void OnValidate()
+    {
+        if (_damagableObject is IDamagable damagable)
+        {
+            _damagable = damagable;
+        }
+        else
+        {
+            _damagable = null;
+            _damagableObject = null;
+            return;
+        }
+
+        if (_damagable.Health.Current > _damagable.Health.Max)
+            _damagable.Health.Decrease(_damagable.Health.Current - _damagable.Health.Max);
+    }
 
     private void OnEnable() => 
-        Health.Changed += Set;
+        _damagable.Health.Changed += OnHealthChanged;
+
+    private void Start() => 
+        Init();
 
     private void OnDisable() => 
-        Health.Changed -= Set;
+        _damagable.Health.Changed -= OnHealthChanged;
 
-    public void Set(int value)
+    private void OnHealthChanged(int health)
     {
-        string convertedValue = Convert.ToString(value);
+        _value.text = $"{health:F0}/{_damagable.Health.Max}";
 
-        _value.text = $"{convertedValue}/{Health.Max}";
-        _image.fillAmount = (float)value / 10;
+        if (_damagable.Health.Max == 0)
+        {
+            Debug.LogError($"Value _damagable.Health.Max is zero! {GetType()}");
+            return;
+        }
+
+        _image.fillAmount = (float)health / _damagable.Health.Max;
     }
 
     private void Init() =>
-        Set(Health.Current);
+        OnHealthChanged(_damagable.Health.Current);
 }

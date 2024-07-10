@@ -15,7 +15,7 @@ public class Enemy : MonoBehaviour, IDamager
     private bool _isAttacking;
     private StateMachine _stateMachine;
 
-    [field: SerializeField] public HealthBar HealthBar { get; private set; }
+    [field: SerializeField] public Health Health { get; private set; }
     [field: SerializeField] public Damager Damager { get; private set; }
 
     private RaycastHit2D TargetHit => TryFindPlayer();
@@ -27,7 +27,7 @@ public class Enemy : MonoBehaviour, IDamager
         _enemyAttackArea.CharacterAttacking += OnAttack;
         _enemyAttackArea.CharacterNotAttacking += OnStopAttack;
 
-        HealthBar.Health.Died += OnDied;
+        Health.Died += OnDied;
     }
 
     private void Awake() => 
@@ -40,7 +40,7 @@ public class Enemy : MonoBehaviour, IDamager
         _enemyAttackArea.CharacterAttacking -= OnAttack;
         _enemyAttackArea.CharacterNotAttacking -= OnStopAttack;
 
-        HealthBar.Health.Died -= OnDied;
+        Health.Died -= OnDied;
     }
 
     private void Update()

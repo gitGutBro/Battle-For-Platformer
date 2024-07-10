@@ -14,7 +14,7 @@ public class Damager
 
         foreach (Collider2D target in hitTargets)
             if (target.TryGetComponent(out IDamagable character))
-                character.HealthBar.Health.Decrease(_damage);
+                character.Health.Decrease(_damage);
     }
 
     private Collider2D[] FindTargets(Collider2D hitArea) =>

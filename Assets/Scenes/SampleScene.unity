@@ -283,6 +283,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1320630648}
     - target: {fileID: 7917139584843615070, guid: 0d37b244df7bcb34b908bd084759069c, type: 3}
+      propertyPath: <Health>k__BackingField._current
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 7917139584843615070, guid: 0d37b244df7bcb34b908bd084759069c, type: 3}
       propertyPath: _mover._patrolPoints.Array.data[0]
       value: 
       objectReference: {fileID: 539923398}
@@ -305,6 +309,10 @@ PrefabInstance:
     - target: {fileID: 7917139584843615070, guid: 0d37b244df7bcb34b908bd084759069c, type: 3}
       propertyPath: _mover._patrolPoints.Array.data[1].y
       value: -1.82
+      objectReference: {fileID: 0}
+    - target: {fileID: 7917139584843615070, guid: 0d37b244df7bcb34b908bd084759069c, type: 3}
+      propertyPath: <Health>k__BackingField.<Max>k__BackingField
+      value: 100
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
@@ -1737,7 +1745,9 @@ MonoBehaviour:
       serializedVersion: 2
       m_Bits: 8
     _onGroundCollider: {fileID: 1310427273}
-  <HealthBar>k__BackingField: {fileID: 1480121450}
+  <Health>k__BackingField:
+    _current: 100
+    <Max>k__BackingField: 100
   <Damager>k__BackingField:
     _damage: 4
     _radius: 1
@@ -2309,8 +2319,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _image: {fileID: 9039828}
   _value: {fileID: 1996621007}
-  <Health>k__BackingField:
-    _current: 10
+  _damagableObject: {fileID: 2145829544}
 --- !u!1 &1092618230
 GameObject:
   m_ObjectHideFlags: 0
@@ -2907,8 +2916,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _image: {fileID: 1653373974}
   _value: {fileID: 970167965}
-  <Health>k__BackingField:
-    _current: 10
+  _damagableObject: {fileID: 1722698743}
 --- !u!1 &1394727559
 GameObject:
   m_ObjectHideFlags: 0
@@ -3177,8 +3185,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _image: {fileID: 897408023}
   _value: {fileID: 1578604716}
-  <Health>k__BackingField:
-    _current: 10
+  _damagableObject: {fileID: 858635453}
 --- !u!1 &1496048593
 GameObject:
   m_ObjectHideFlags: 0
@@ -3521,6 +3528,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1653373972}
   m_CullTransparentMesh: 1
+--- !u!114 &1722698743 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7917139584843615070, guid: 0d37b244df7bcb34b908bd084759069c, type: 3}
+  m_PrefabInstance: {fileID: 37930622}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92d4604b6e8bc7f4cae0f4fbb02441ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1768358761
 GameObject:
   m_ObjectHideFlags: 0
@@ -3745,6 +3763,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1996621005}
   m_CullTransparentMesh: 1
+--- !u!114 &2145829544 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7917139584843615070, guid: 0d37b244df7bcb34b908bd084759069c, type: 3}
+  m_PrefabInstance: {fileID: 5392503611899377613}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 92d4604b6e8bc7f4cae0f4fbb02441ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &5392503611899377613
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3847,7 +3876,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7917139584843615070, guid: 0d37b244df7bcb34b908bd084759069c, type: 3}
       propertyPath: <Health>k__BackingField._current
-      value: 1
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 7917139584843615070, guid: 0d37b244df7bcb34b908bd084759069c, type: 3}
       propertyPath: _mover._patrolPoints.Array.data[0]
@@ -3872,6 +3901,10 @@ PrefabInstance:
     - target: {fileID: 7917139584843615070, guid: 0d37b244df7bcb34b908bd084759069c, type: 3}
       propertyPath: _mover._patrolPoints.Array.data[1].y
       value: -1.82
+      objectReference: {fileID: 0}
+    - target: {fileID: 7917139584843615070, guid: 0d37b244df7bcb34b908bd084759069c, type: 3}
+      propertyPath: <Health>k__BackingField.<Max>k__BackingField
+      value: 100
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
