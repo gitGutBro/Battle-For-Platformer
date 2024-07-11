@@ -24,8 +24,7 @@ public class HealthBar : MonoBehaviour
             return;
         }
 
-        if (_damagable.Health.Current > _damagable.Health.Max)
-            _damagable.Health.Decrease(_damagable.Health.Current - _damagable.Health.Max);
+        _damagable.Health.OnValidate();
     }
 
     private void OnEnable() => 
@@ -37,11 +36,11 @@ public class HealthBar : MonoBehaviour
     private void OnDisable() => 
         _damagable.Health.Changed -= OnHealthChanged;
 
-    private void OnHealthChanged(int health)
+    private void OnHealthChanged(int health, int max)
     {
-        _value.text = $"{health:F0}/{_damagable.Health.Max}";
+        _value.text = $"{health:F0}/{max:F0}";
 
-        if (_damagable.Health.Max == 0)
+        if (max == 0)
         {
             Debug.LogError($"Value _damagable.Health.Max is zero! {GetType()}");
             return;
@@ -51,5 +50,5 @@ public class HealthBar : MonoBehaviour
     }
 
     private void Init() =>
-        OnHealthChanged(_damagable.Health.Current);
+        OnHealthChanged(_damagable.Health.Current, _damagable.Health.Max);
 }
