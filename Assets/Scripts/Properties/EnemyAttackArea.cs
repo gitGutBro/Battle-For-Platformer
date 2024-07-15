@@ -6,7 +6,7 @@ public class EnemyAttackArea : AttackArea
     public event Action CharacterNotAttacking;
 
     private void OnTriggerStay2D() => 
-        CharacterAttacking.Invoke();
+        CharacterAttacking?.Invoke();
 
     private void OnTriggerExit2D() =>
         CharacterNotAttacking.Invoke();

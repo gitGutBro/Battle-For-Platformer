@@ -7,6 +7,7 @@ public class Player : MonoBehaviour, IDamager, IItemPicker
     private const float MaxDelay = 0.5f;
 
     [SerializeField] private AttackArea _attackArea;
+    [SerializeField] private VampireSkillArea _skillArea;
 
     [Header("Moving Settings")]
     [SerializeField] private PlayerMover _mover;
@@ -20,14 +21,20 @@ public class Player : MonoBehaviour, IDamager, IItemPicker
 
     public Wallet Wallet { get; private set; }
 
-    private void OnEnable() => 
+    private void OnEnable()
+    {
+        _skillArea.HealthTook += Health.Increase;
         Health.Died += OnDie;
+    }
 
     private void Awake() =>
         Init();
 
-    private void OnDisable() => 
+    private void OnDisable()
+    {
+        _skillArea.HealthTook -= Health.Increase;
         Health.Died -= OnDie;
+    }
 
     private void Update()
     {
@@ -39,6 +46,7 @@ public class Player : MonoBehaviour, IDamager, IItemPicker
         Move();
         Attack();
         Jump();
+        ActiveSkill();
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -69,6 +77,12 @@ public class Player : MonoBehaviour, IDamager, IItemPicker
             _animationsSwitcher.SetPunch();
             _attackDelay = 0;
         }
+    }
+
+    private void ActiveSkill()
+    {
+        if (_inputService.IsSkillActive && _skillArea.CanActivate)
+            _skillArea.gameObject.SetActive(true);
     }
 
     private void OnDie()
